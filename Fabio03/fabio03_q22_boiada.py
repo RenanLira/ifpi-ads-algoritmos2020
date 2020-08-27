@@ -10,7 +10,9 @@ def main():
         nome = input('Nome: ')
         peso = float(input('Peso: '))
 
-
+        if cont == 1:
+            magro = peso
+            
         if peso < magro:
             magro = peso
             num_magro = num_indentificacao
@@ -18,7 +20,6 @@ def main():
 
         if peso > gordo:
             gordo = peso
-            magro = gordo
             num_gordo = num_indentificacao
             nome_gordo = nome
 
