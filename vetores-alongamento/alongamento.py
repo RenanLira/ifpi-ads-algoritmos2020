@@ -30,7 +30,6 @@ def tirar_media(vetor):
     return soma / total
     
 
-
 def substituir_numeros(vetor, num_positivo, num_negativo):
     for i in range(len(vetor)):
         if vetor[i] > 0:
