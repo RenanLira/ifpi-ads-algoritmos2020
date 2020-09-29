@@ -145,4 +145,5 @@ def mostrar_msg(msg, tipo=1):
     input(f'<enter> para {final}')
 
 
-main()
+if __name__ == '__main__':
+    main()
