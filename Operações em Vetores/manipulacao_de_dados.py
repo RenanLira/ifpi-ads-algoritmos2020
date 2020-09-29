@@ -27,7 +27,7 @@ def main():
             if opcao == 2 or opcao == 6:
                 posicao = int(input(f'Qual posição(0 - {len(lista)-1}) ? '))
 
-                if posicao > qtd or posicao < 0:
+                if posicao > len(lista)-1 or posicao < 0:
                     mostrar_msg('Valor invalido', 2)
 
                 else:
@@ -43,7 +43,7 @@ def main():
                         else:
                             mostrar_msg('Opção invalida...', 2)
             
-            
+
             elif opcao == 3:
                 mostrar_lista(lista)
 
