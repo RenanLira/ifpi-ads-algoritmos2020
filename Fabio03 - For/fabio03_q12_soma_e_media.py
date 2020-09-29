@@ -1,0 +1,21 @@
+def main():
+    n = int(input('Digite o tamanho da lista: '))
+
+    soma, media = info_lista(n)
+    print(f'A soma dos itens da lista é {soma} e a media é {media}')
+
+
+def info_lista(n):
+    soma_num = 0
+    media = 0
+    for i in range(n):
+        num = int(input('Digite um numero da lista: '))
+
+        soma_num += num
+
+    media = soma_num / n
+
+    return soma_num, media
+
+
+main()
