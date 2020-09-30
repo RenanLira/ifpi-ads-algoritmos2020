@@ -1,15 +1,18 @@
 def main():
     menu = '*** Brincando com Listas ***'
-    menu += '\n 1 - Inserir Valores'
-    menu += '\n 2 - Mostrar Valor posição'
-    menu += '\n 3 - Mostrar lista completa'
-    menu += '\n 4 - Remover do Final'
-    menu += '\n 5 - Remover do Início'
-    menu += '\n 6 - Remover de Posição Específica'
-    menu += '\n 7 - Quantidade de numeros pares'
-    menu += '\n 8 - Quantidade de numeros impares'
-    menu += '\n 9 - Quantidade de numeros Primos'
-    menu += '\n 0 - Sair '
+    menu += '\n1 - Inserir Valores'
+    menu += '\n2 - Mostrar Valor posição'
+    menu += '\n3 - Mostrar lista completa'
+    menu += '\n4 - Remover do Final'
+    menu += '\n5 - Remover do Início'
+    menu += '\n6 - Remover de Posição Específica'
+    menu += '\n7 - Quantidade de numeros pares'
+    menu += '\n8 - Quantidade de numeros impares'
+    menu += '\n9 - Quantidade de numeros Primos'
+    menu += '\n10 - Dobrar valores'
+    menu += '\n11 - Triplicar valores'
+    menu += '\n12 - Transformar valores pela metade'
+    menu += '\n0 - Sair '
     menu += '\n\n Opção >>> '
 
     lista = []
@@ -58,6 +61,22 @@ def main():
             elif opcao == 9:
                 numeros_primos(lista)
 
+            elif opcao == 10:
+                multiplicar_valores(lista, 2)
+            
+            elif opcao == 11:
+                multiplicar_valores(lista, 3)
+
+            elif opcao == 12:
+                multiplicar_valores(lista, 0.5)
+
+
+def multiplicar_valores(lista, num):
+    for i in range(len(lista)):
+        lista[i] = int(lista[i] * num)
+
+    mostrar_msg('valores alterados com sucesso')
+
 
 def total_numeros(lista, tipo):
     pares = 0
@@ -94,7 +113,6 @@ def numeros_primos(lista):
             print(f'{i} = {lista[i]}')
 
     mostrar_msg(f'Há um total de {total_primos} numeros primos')
-
 
 
 def remover(lista, num):
