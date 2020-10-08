@@ -1,7 +1,7 @@
 import os
 
 def main():
-    while condicao:
+    while True:
         try:
             numeros = list(map(lambda a: int(a)*2 if a else '', input('->(deixe vazio para cancelar) ').split(' ')))
             
