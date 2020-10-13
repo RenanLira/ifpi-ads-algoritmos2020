@@ -16,7 +16,7 @@ def gerar_matriz(tam):
         linha = list(map(int, input(f'Linha {i}: ').split(' ')))
 
         if len(linha) != tam:
-            print('Digite 4 numeros por favor')
+            print(f'Digite {tam} numeros por favor')
         else:
             matriz.append(linha)
             i += 1
