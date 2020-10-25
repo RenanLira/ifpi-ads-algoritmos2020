@@ -18,6 +18,7 @@ def main():
             novo_celular(dados)
         
         elif escolha == 2:
+            limpar_tela()
             listar(dados, 'nome', 'marca', 'valor')
             input('\n<enter> para continuar')
 
@@ -32,7 +33,7 @@ def main():
 
 def buscar(dados):
     print(menu('Buscar Celulares'))
-    print('Deixe em branco se desejar cancelar\n')
+    print('Deixe em branco o tipo de pesquisa se desejar cancelar\n')
 
     pesquisa = control('Nome ou marca')
     tipo = control('Pesquiar por: (nome/marca)')
@@ -44,6 +45,7 @@ def buscar(dados):
         resultado = get_resultado_pesquisa(pesquisa, tipo, lista_nomes)
         if resultado:
             selecionar(resultado, dados)
+
         else:
             print('nenhum resultado foi encontrado')
             input('<enter> para continuar')
@@ -53,54 +55,76 @@ def buscar(dados):
 
 def selecionar(resultado, dados):
     while True:
+        limpar_tela()
         listar(resultado, 'nome', 'marca', 'valor')
         print('Deixe em branco para cancelar')
-        op = control('Selecione um celular', int)
-        celular_selecionado = []
+        op = control(f'Selecione um celular 0-{len(resultado)-1}', int)
 
         if not str(op).isnumeric():
             break
 
-        if op > len(resultado)-1 and op < 0:
+        elif op > len(resultado)-1 and op < 0:
             print('Digite um numero correto!')
-        else:
-            limpar_tela()
-            celular_selecionado.append(resultado[op])
-            listar(celular_selecionado, 'nome', 'marca', 'valor')
-            print('1. mostrar detalhes 2.remover 3. editar 4. duplicar registro')
-            op = control('>>> ', int)
 
-            if op == 1:
-                listar(celular_selecionado, 'nome', 'marca', 'valor', 'cam_frontal', 'tela')
-                input('<enter> para continuar')
-            
-            elif op == 2:
-                if input('Tem certeza que desejar apagar este item (deixe EM BRANCO para CANCELAR)\n>>>'):
-                    del dados[dados.index(celular_selecionado[0])]
-                    break
-                else:
-                    pass
-            
-            elif op == 3:
-                editar(celular_selecionado, dados)
+        else:
+            menu_celular(resultado[op], dados)
+                
+
+
+def menu_celular(celular, dados):
+    celular_selecionado = []
+    celular_selecionado.append(celular)
+
+    while True:
+        limpar_tela()
+        listar(celular_selecionado, 'nome', 'marca', 'valor')
+        print('1. mostrar detalhes 2.remover 3. editar 4. duplicar registro')
+        op = control('>>>', int)
+
+        if op == 1:
+            limpar_tela()
+            listar(celular_selecionado, 'nome', 'marca', 'valor', 'cam_frontal', 'tela')
+            input('<enter> para continuar')
+                
+        elif op == 2:
+            if input('Tem certeza que desejar apagar este item (deixe EM BRANCO para CANCELAR)\n>>>'):
+                del dados[dados.index(celular_selecionado[0])]
+                break
+            else:
+                pass
+                
+        elif op == 3:
+            editar(celular_selecionado, dados)
+
+        elif op == 4:
+            if input('Tem certeza que desejar duplicar este item (deixe EM BRANCO para CANCELAR)\n>>>'):
+                dados.append(celular_selecionado[0])
+                break
+            else:
+                pass
+        
+        else:
+            break
+
+
 
 
 def editar(celular, dados):
     itens = ['nome', 'marca', 'valor', 'tela', 'cam_frontal']
+
+    limpar_tela()
     listar(celular, *itens)
     escolher = input('Qual item deseja editar: ')
 
     itens_escolhido = sorted(itens, key=lambda a: a.find(escolher.lower()), reverse=True)
-
     item_escolhido = itens_escolhido[0]
 
-    novo_valor = input(f'{item_escolhido}: ')
+    novo_valor = input(f'{item_escolhido}: ').upper() if item_escolhido != 'tela' or item_escolhido != 'valor' else float(input(f'{item_escolhido}: '))
     if novo_valor:
         for i in range(len(dados)):
             if dados[i] == celular[0]:
                 dados[i][item_escolhido] = novo_valor
     
-
 
 def get_resultado_pesquisa(pesquisa, tipo, lista):
 
@@ -138,7 +162,7 @@ def novo_celular(dados):
 
             cont += 1
     
-        adicionar_itens(*lista_dados, dados) if len(lista_dados) == len(dados[0]) else ''
+        adicionar_itens(dados, *lista_dados) if len(lista_dados) == len(dados[0]) else ''
 
     else:
         lista_dados.append(control('nome'))
@@ -147,7 +171,7 @@ def novo_celular(dados):
         lista_dados.append(control('valor', float))
         lista_dados.append(control('cam_frontal'))
 
-        adicionar_itens(*lista_dados, dados)
+        adicionar_itens(dados, *lista_dados)
 
 
 def control(dado, tipo_dado=str):
@@ -186,7 +210,6 @@ def menu(titulo, *args):
     return texto
 
 
-
 def limpar_tela():
     try:
         os.system('cls')
@@ -194,7 +217,7 @@ def limpar_tela():
         os.system('clear')
 
 
-def adicionar_itens(nome, marca, tela, valor, cam_frontal, dados):
+def adicionar_itens(dados, nome, marca, tela, valor, cam_frontal):
     cam_frontal = cam_frontal.upper()
     if cam_frontal != 'SIM' or cam_frontal != 'NÃO':
         if cam_frontal[0] == 'S':
