@@ -1,14 +1,13 @@
-import arquivos
-import itens
 import time
 import os
 import sys
+import json
 
 
 def main():
     limpar_tela()
     nome = 'celulares.bd'
-    dados = arquivos.abrir_arquivo(nome)
+    dados = abrir_arquivo(nome)
 
     while True:
         limpar_tela()
@@ -27,7 +26,7 @@ def main():
             buscar(dados)
 
         elif escolha == 0:
-            arquivos.salvar_arquivo(nome, dados)
+            salvar_arquivo(nome, dados)
             sys.exit()
 
 
@@ -87,7 +86,20 @@ def selecionar(resultado, dados):
 
 
 def editar(celular, dados):
-    pass
+    itens = ['nome', 'marca', 'valor', 'tela', 'cam_frontal']
+    listar(celular, *itens)
+    escolher = input('Qual item deseja editar: ')
+
+    itens_escolhido = sorted(itens, key=lambda a: a.find(escolher.lower()), reverse=True)
+
+    item_escolhido = itens_escolhido[0]
+
+    novo_valor = input(f'{item_escolhido}: ')
+    if novo_valor:
+        for i in range(len(dados)):
+            if dados[i] == celular[0]:
+                dados[i][item_escolhido] = novo_valor
+    
 
 
 def get_resultado_pesquisa(pesquisa, tipo, lista):
@@ -116,16 +128,26 @@ def novo_celular(dados):
     print('Deixe o campo em branco se desejar cancelar\n')
     lista_dados = []
     cont = 0
-    for i in dados[0].keys():
-        lista_dados.append(control(i, float if type(dados[0][i]) == float else str))
-        if lista_dados[cont]:
-            pass
-        else:
-            break
+    if dados:
+        for i in dados[0].keys():
+            lista_dados.append(control(i, float if type(dados[0][i]) == float else str))
+            if lista_dados[cont]:
+                pass
+            else:
+                break
 
-        cont += 1
-           
-    itens.adicionar_itens(*lista_dados, dados) if len(lista_dados) == len(dados[0]) else ''
+            cont += 1
+    
+        adicionar_itens(*lista_dados, dados) if len(lista_dados) == len(dados[0]) else ''
+
+    else:
+        lista_dados.append(control('nome'))
+        lista_dados.append(control('marca'))
+        lista_dados.append(control('tela', float))
+        lista_dados.append(control('valor', float))
+        lista_dados.append(control('cam_frontal'))
+
+        adicionar_itens(*lista_dados, dados)
 
 
 def control(dado, tipo_dado=str):
@@ -171,6 +193,47 @@ def limpar_tela():
     except:
         os.system('clear')
 
+
+def adicionar_itens(nome, marca, tela, valor, cam_frontal, dados):
+    cam_frontal = cam_frontal.upper()
+    if cam_frontal != 'SIM' or cam_frontal != 'NÃO':
+        if cam_frontal[0] == 'S':
+            cam_frontal = 'SIM'
+        else:
+            cam_frontal = 'NÃO'
+
+    novo_item = {
+        'nome': nome.upper(),
+        'marca': marca.upper(),
+        'tela': tela,
+        'valor': valor,
+        'cam_frontal': cam_frontal
+    }
+
+    dados.append(novo_item)
+
+
+def abrir_arquivo(nome):
+    get_dados = []
+
+    if os.path.exists(nome):
+        arquivo = open(nome, 'r')
+        dados = arquivo.readline()
+        get_dados = json.loads(dados)
+
+        arquivo.close()
+
+
+    return get_dados
+
+
+def salvar_arquivo(nome, dados):
+    arquivo = open(nome, 'w')
+
+    novos_dados = json.dumps(dados)
+    arquivo.write(novos_dados)
+
+    arquivo.close()
 
 if __name__ == '__main__':
     main()
