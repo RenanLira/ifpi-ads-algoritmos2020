@@ -2,18 +2,16 @@ import arquivos
 from collections import namedtuple
 
 
-def get_itens(dados):
-    chaves = namedtuple('Chaves', list(dados[0].keys()))
-    lista = []
-    for dado in range(len(dados)):
-        item = chaves(*list(dados[dado].values()))
+# def get_itens(dados):
+#     lista = []
+#     for dado in dados:
+#         lista.append(dado)
 
-        lista.append(item)
-
-    return lista
+#     return lista
     
 
 def adicionar_itens(nome, marca, tela, valor, cam_frontal, dados):
+    cam_frontal = cam_frontal.upper()
     if cam_frontal != 'SIM' or cam_frontal != 'NÃO':
         if cam_frontal[0] == 'S':
             cam_frontal = 'SIM'
@@ -21,8 +19,8 @@ def adicionar_itens(nome, marca, tela, valor, cam_frontal, dados):
             cam_frontal = 'NÃO'
 
     novo_item = {
-        'nome': nome,
-        'marca': marca,
+        'nome': nome.upper(),
+        'marca': marca.upper(),
         'tela': tela,
         'valor': valor,
         'cam_frontal': cam_frontal
